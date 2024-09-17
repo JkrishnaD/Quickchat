@@ -1,11 +1,14 @@
+"use client"
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { useAuthActions } from "@convex-dev/auth/react";
 
 export default function Home() {
+  const { signOut } = useAuthActions();
+
   return (
-   <div className="text-blue-700 bg-white h-screen">
-    hello world
-    <Button>Hi</Button>
-   </div>
+    <div>
+      Logged In!
+      <Button onClick={() => signOut()}>SignOut</Button>
+    </div>
   );
 }
