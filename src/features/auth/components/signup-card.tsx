@@ -1,3 +1,4 @@
+"use client";
 import {
   Card,
   CardContent,
@@ -14,6 +15,7 @@ import { FcGoogle } from "react-icons/fc";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { useAuthActions } from "@convex-dev/auth/react";
+import { TriangleAlert } from "lucide-react";
 
 interface SignUpCardProps {
   setState: (state: SignInFlow) => void;
@@ -24,6 +26,7 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [pending, setPending] = useState(false);
   const { signIn } = useAuthActions();
+  const [error, setError] = useState("");
 
   const onAuthProvider = (value: "google" | "github") => {
     setPending(true);
@@ -31,6 +34,19 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
       setPending(pending);
     });
   };
+
+  const onPassword = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setPending(true);
+    signIn("password", { email, password, flow: "signUp" })
+      .catch(() => {
+        setError("Invalid Email or Password");
+      })
+      .finally(() => {
+        setPending(false);
+      });
+  };
+
   return (
     <Card className="w-full h-full p-8 font-medium">
       <CardHeader className="font-bold text-xl px-0 pt-0">
@@ -40,7 +56,7 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4 px-0 pb-0">
-        <form className="space-y-3">
+        <form className="space-y-3" onSubmit={onPassword}>
           <Input
             disabled={pending}
             value={email}
@@ -65,6 +81,12 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
             type="password"
             required
           />
+          {!!error && (
+            <div className="bg-destructive/15 flex items-center text-center text-destructive text-sm gap-x-2 my-6 ">
+              <TriangleAlert size={15} />
+              <p>{error}</p>
+            </div>
+          )}
           <Button
             type="submit"
             className="w-full font-semibold"
