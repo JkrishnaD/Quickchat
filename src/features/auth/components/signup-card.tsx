@@ -20,7 +20,9 @@ import { TriangleAlert } from "lucide-react";
 interface SignUpCardProps {
   setState: (state: SignInFlow) => void;
 }
+
 export const SignUpCard = ({ setState }: SignUpCardProps) => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -38,7 +40,12 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
   const onPassword = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setPending(true);
-    signIn("password", { email, password, flow: "signUp" })
+
+    if (password !== confirmPassword) {
+      setError("Password Doesn't Match");
+    }
+
+    signIn("password", { name, email, password, flow: "signUp" })
       .catch(() => {
         setError("Invalid Email or Password");
       })
@@ -57,6 +64,14 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
       </CardHeader>
       <CardContent className="space-y-4 px-0 pb-0">
         <form className="space-y-3" onSubmit={onPassword}>
+          <Input
+            disabled={pending}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Name"
+            type="text"
+            required
+          />
           <Input
             disabled={pending}
             value={email}
@@ -82,7 +97,7 @@ export const SignUpCard = ({ setState }: SignUpCardProps) => {
             required
           />
           {!!error && (
-            <div className="bg-destructive/15 flex items-center text-center text-destructive text-sm gap-x-2 my-6 ">
+            <div className="bg-destructive/15 flex items-center text-center text-destructive text-sm gap-x-2 my-6 p-2 font-semibold">
               <TriangleAlert size={15} />
               <p>{error}</p>
             </div>
