@@ -1,13 +1,13 @@
 "use client";
 import { UserButton } from "@/features/auth/components/user-button";
 import { useCreateWorkspaceModal } from "@/features/workspace/store/use-create-workspace";
-import { useGetWorkspace } from "@/features/workspace/api/use-get-workspace";
+import { useGetWorkspaces } from "@/features/workspace/api/use-get-workspaces";
 import { useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [open, setOpen] = useCreateWorkspaceModal();
-  const { data, isLoading } = useGetWorkspace();
+  const { data, isLoading } = useGetWorkspaces();
   const router = useRouter()
 
   const workspaceId = useMemo(() => data?.[0]?._id, [data]);
