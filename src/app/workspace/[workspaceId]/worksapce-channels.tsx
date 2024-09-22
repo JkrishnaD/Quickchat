@@ -30,7 +30,7 @@ export const WorkspaceChannelsBar = () => {
     );
   }
   return (
-    <div className="flex bg-[#2f457a] h-full gap-x-2">
+    <div className="bg-[#2f457a] h-full gap-x-2">
       <WorkspaceHeader
         workspace={workspace}
         isAdmin={member.role === "admin"}
