@@ -9,9 +9,12 @@ import { WorkspaceSections } from "./channels-section";
 import { WorkspaceHeader } from "./workspace-header";
 import { SidebarItem } from "./sidebar-item";
 import { UserItem } from "./user-item";
+import { useCreateChannelModal } from "@/features/channels/store/use-create-channel";
 
 export const WorkspaceSidebar = () => {
   const workspaceId = useWorkspaceId();
+  const [_open, setOpen] = useCreateChannelModal();
+
   const { data: workspace, isLoading: worksapceLoading } = useGetWorkspace({
     id: workspaceId,
   });
@@ -48,9 +51,18 @@ export const WorkspaceSidebar = () => {
         workspace={workspace}
         isAdmin={member.role === "admin"}
       />
-      {/* <div className="flex flex-col"></div> */}
 
-      <WorkspaceSections label="Channels" hint="New Channel" onNew={() => {}}>
+      <WorkspaceSections
+        label="Channels"
+        hint="New Channel"
+        onNew={
+          member.role === "admin"
+            ? () => {
+                setOpen(true);
+              }
+            : undefined
+        }
+      >
         {channels?.map((item) => (
           <SidebarItem
             key={item._id}

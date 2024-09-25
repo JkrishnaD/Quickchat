@@ -42,7 +42,7 @@ export const WorkspaceSwitcher = () => {
       <DropdownMenuContent
         side="bottom"
         align="start"
-        className="w-64 bg-white text-[#153377] rounded-md my-2"
+        className="w-64 bg-white text-[#153377] rounded-md my-2 z-10"
       >
         <DropdownMenuItem
           onClick={() => router.push(`/workspace/${workspaceId}`)}
