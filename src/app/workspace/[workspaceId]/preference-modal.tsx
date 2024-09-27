@@ -102,7 +102,7 @@ export const PreferenceModal = ({
                     </p>
                   </DialogTrigger>
                   <DialogContent>
-                    <DialogHeader className="flex items-center justify-center">
+                    <DialogHeader className="flex items-center justify-center text-[#3758a5]">
                       <DialogTitle> Rename The Workspace</DialogTitle>
                     </DialogHeader>
                     <form className="space-y-2" onSubmit={handleEdit}>
@@ -117,7 +117,8 @@ export const PreferenceModal = ({
                       <DialogFooter>
                         <DialogClose asChild>
                           <Button
-                            className="bg-red-500 font-semibold hover:bg-red-500/90"
+                          variant="outline"
+                            className="font-semibold text-[#3758a5]"
                             disabled={isUpdatePending}
                           >
                             Cancel
@@ -125,7 +126,7 @@ export const PreferenceModal = ({
                         </DialogClose>
                         <Button
                           type="submit"
-                          className="font-semibold"
+                          className="font-semibold bg-[#3758a5] hover:bg-[#3758a5]/90"
                           disabled={isUpdatePending}
                         >
                           Save

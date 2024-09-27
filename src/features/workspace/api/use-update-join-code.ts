@@ -1,9 +1,9 @@
-import { useMutation } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
 import { useCallback, useMemo, useState } from "react";
 import { Id } from "../../../../convex/_generated/dataModel";
+import { useMutation } from "convex/react";
+import { api } from "../../../../convex/_generated/api";
 
-type RequestType = { id: Id<"workspaces">; name: string };
+type RequestType = { workspaceId: Id<"workspaces"> };
 type ResponseType = Id<"workspaces"> | null;
 
 type Options = {
@@ -13,20 +13,18 @@ type Options = {
   throwError?: boolean;
 };
 
-export const useUpdateWorkspace = () => {
-  const [data, setData] = useState<ResponseType>(null);
+export const useUpdateJoinCode = () => {
+  const [data, setData] = useState<ResponseType | null>(null);
   const [error, setError] = useState<Error | null>(null);
-
   const [status, setStatus] = useState<
     "success" | "error" | "pending" | "settled" | null
   >(null);
-
-  const isPending = useMemo(() => status === "pending", [status]);
   const isSuccess = useMemo(() => status === "success", [status]);
+  const isPending = useMemo(() => status === "pending", [status]);
   const isError = useMemo(() => status === "error", [status]);
   const isSettled = useMemo(() => status === "settled", [status]);
 
-  const mutation = useMutation(api.workspace.update);
+  const mutation = useMutation(api.workspace.newJoinCode);
 
   const mutate = useCallback(
     async (values: RequestType, options?: Options) => {
@@ -54,12 +52,12 @@ export const useUpdateWorkspace = () => {
     [mutation]
   );
   return {
-    mutate,
-    isPending,
-    isError,
-    isSuccess,
-    isSettled,
     data,
     error,
+    isError,
+    isPending,
+    isSettled,
+    isSuccess,
+    mutate
   };
 };
