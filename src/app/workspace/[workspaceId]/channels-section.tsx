@@ -22,7 +22,7 @@ export const WorkspaceSections = ({
   const [on, Toggle] = useToggle(true);
 
   return (
-    <div className="flex flex-col px-5 py-2">
+    <div className="flex flex-col px-5 py-2 space-y-1">
       <div className="flex items-center group">
         <Button
           variant="transperent"

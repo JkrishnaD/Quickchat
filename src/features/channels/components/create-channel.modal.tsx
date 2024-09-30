@@ -1,3 +1,4 @@
+"use client";
 import { Input } from "@/components/ui/input";
 import { useCreateChannelModal } from "../store/use-create-channel";
 import {
@@ -6,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import React, { ChangeEvent, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
 import { useCreateChannel } from "../api/use-create-channel";
@@ -25,10 +26,13 @@ export const CreateChannelModal = () => {
     mutate(
       { name, workspaceId },
       {
-        onSuccess(workspaceId) {
+        onSuccess(id) {
           toast.success("Channel Created");
-          // router.push(`/workspace/${workspaceId}/channels/${id}`);
+          router.push(`/workspace/${workspaceId}/channel/${id}`);
           handleClose();
+        },
+        onError() {
+          toast.error("Failed to create");
         },
       }
     );

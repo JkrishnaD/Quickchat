@@ -3,8 +3,10 @@ import { useGetWorkspace } from "@/features/workspace/api/use-get-workspac";
 import { useGetMembers } from "@/features/members/api/use-get-members";
 import { useGetChannels } from "@/features/channels/api/use-get-channels";
 
-import { AlertTriangle, Hash, Loader } from "lucide-react";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
+import { useChannelId } from "@/hooks/use-channel-id";
+
+import { AlertTriangle, Hash, Loader } from "lucide-react";
 import { WorkspaceSections } from "./channels-section";
 import { WorkspaceHeader } from "./workspace-header";
 import { SidebarItem } from "./sidebar-item";
@@ -13,6 +15,8 @@ import { useCreateChannelModal } from "@/features/channels/store/use-create-chan
 
 export const WorkspaceSidebar = () => {
   const workspaceId = useWorkspaceId();
+  const channelId = useChannelId();
+
   const [_open, setOpen] = useCreateChannelModal();
 
   const { data: workspace, isLoading: worksapceLoading } = useGetWorkspace({
@@ -69,6 +73,7 @@ export const WorkspaceSidebar = () => {
             label={item.name}
             id={item._id}
             icon={Hash}
+            variant={channelId === item._id ? "active" : "default"}
           />
         ))}
       </WorkspaceSections>
