@@ -49,7 +49,7 @@ export const PreferenceModal = ({
     const ok = await confirm();
 
     if (!ok) return null;
-    
+
     removeWorkspace(
       {
         id: workspaceId,
@@ -107,7 +107,7 @@ export const PreferenceModal = ({
                     </DialogHeader>
                     <form className="space-y-2" onSubmit={handleEdit}>
                       <Input
-                        disabled={false}
+                        disabled={isUpdatePending}
                         placeholder="New Name"
                         value={value}
                         onChange={(e) => setValue(e.target.value)}
@@ -117,7 +117,7 @@ export const PreferenceModal = ({
                       <DialogFooter>
                         <DialogClose asChild>
                           <Button
-                          variant="outline"
+                            variant="outline"
                             className="font-semibold text-[#3758a5]"
                             disabled={isUpdatePending}
                           >
