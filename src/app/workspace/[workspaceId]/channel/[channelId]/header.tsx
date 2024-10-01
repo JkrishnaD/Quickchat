@@ -113,12 +113,23 @@ export const Header = ({ name }: HeaderProps) => {
           <div className="px-4 pb-4 space-y-2">
             <div className="bg-white flex flex-col px-5 py-4 border rounded-lg hover:bg-gray-50 cursor-pointer">
               <div className="flex justify-between items-center w-full">
-                <p className="font-bold text-base"> Change Name</p>
+                {member?.role === "admin" ? (
+                  <div>
+                    <p className="font-bold text-base"> Change Name</p>
+                    <p className="text-sm font-medium"># {name}</p>
+                  </div>
+                ) : (
+                  <p className="font-bold text-base">
+                    Only Admin can change the name
+                  </p>
+                )}
                 <Dialog open={editOpen} onOpenChange={handleOpen}>
                   <DialogTrigger>
-                    <button className="font-bold text-[#3758a5] hover:underline">
-                      Edit
-                    </button>
+                    {member?.role === "admin" && (
+                      <button className="font-bold text-[#3758a5] hover:underline">
+                        Edit
+                      </button>
+                    )}
                   </DialogTrigger>
                   <DialogContent>
                     <DialogHeader className="flex items-center font-bold text-[#3758a5]">
@@ -155,16 +166,17 @@ export const Header = ({ name }: HeaderProps) => {
                   </DialogContent>
                 </Dialog>
               </div>
-              <p className="text-sm font-medium"># {name}</p>
             </div>
 
-            <button
-              onClick={handleRemove}
-              disabled={removePending}
-              className="flex flex-row items-center border p-3 rounded-lg font-semibold text-red-500 hover:bg-gray-50"
-            >
-              <TrashIcon className="size-5 pr-1" /> Delete Channel
-            </button>
+            {member?.role === "admin" && (
+              <button
+                onClick={handleRemove}
+                disabled={removePending}
+                className="flex flex-row items-center border p-3 rounded-lg font-semibold text-red-500 hover:bg-gray-50"
+              >
+                <TrashIcon className="size-5 pr-1" /> Delete Channel
+              </button>
+            )}
           </div>
         </DialogContent>
       </Dialog>
