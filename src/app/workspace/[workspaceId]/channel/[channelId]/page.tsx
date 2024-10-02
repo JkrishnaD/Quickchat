@@ -3,6 +3,7 @@ import { useGetChannel } from "@/features/channels/api/use-get-channel";
 import { useChannelId } from "@/hooks/use-channel-id";
 import { Loader, TriangleAlert } from "lucide-react";
 import { Header } from "./header";
+import { ChartInput } from "./chat-input";
 
 const ChannelPage = () => {
   const id = useChannelId();
@@ -28,10 +29,10 @@ const ChannelPage = () => {
     );
   }
   return (
-    <div>
-      <div>
-        <Header name={data.name} />
-      </div>
+    <div className="flex flex-col h-full">
+      <Header name={data.name} />
+      <div className="flex-1"/>
+        <ChartInput placeholder={`Message in #${data.name}`} />
     </div>
   );
 };

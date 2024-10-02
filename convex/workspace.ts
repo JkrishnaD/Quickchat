@@ -175,7 +175,6 @@ export const get = query({
       .query("members")
       .withIndex("by_user_id", (q) => q.eq("userId", userId)) // These are done because we declared the indexes in the schema
       .collect();
-    console.log(members);
     const workspaceIds = members.map((member) => member.workspaceId);
     const workspaces = [];
 

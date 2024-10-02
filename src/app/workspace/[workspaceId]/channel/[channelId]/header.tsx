@@ -94,7 +94,7 @@ export const Header = ({ name }: HeaderProps) => {
     <div className="flex h-[49px] border-b items-center px-4 overflow-hidden">
       <ConfirmDialog />
       <Dialog>
-        <DialogTrigger>
+        <DialogTrigger asChild>
           <Button
             variant="outline"
             size="sm"
