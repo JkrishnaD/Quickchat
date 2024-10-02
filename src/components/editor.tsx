@@ -15,6 +15,7 @@ import { ImageIcon, Smile } from "lucide-react";
 import { Hint } from "./hint";
 import { Delta, Op } from "quill/core";
 import { cn } from "@/lib/utils";
+import { EmojiPopover } from "./ui/emoji-popover";
 
 type EditorValue = {
   image: File | null;
@@ -144,6 +145,12 @@ const Editor = ({
 
   const isEmpty = text.replace(/<(.|\n)*?>/g, "").trim().length === 0;
 
+  //to add the emojio to the text
+  const onEmojiSelect = (emoji: any) => {
+    const quill = quillRef.current;
+    quill?.insertText(quill.getSelection()?.index || 0, emoji.native);
+  };
+
   return (
     <div className="flex flex-col">
       <div className="flex flex-col border border-slate-200 rounded-md overflow-hidden focus-within:border-slate-300 focus-within:shadow-sm bg-white transition">
@@ -159,16 +166,11 @@ const Editor = ({
               <PiTextAaBold className="size-5" />
             </Button>
           </Hint>
-          <Hint label="Emoji">
-            <Button
-              variant="ghost"
-              size="iconSm"
-              disabled={disabled}
-              onClick={() => {}}
-            >
+          <EmojiPopover onEmojiSelect={onEmojiSelect}>
+            <Button variant="ghost" size="iconSm" disabled={disabled}>
               <Smile className="size-5" />
             </Button>
-          </Hint>
+          </EmojiPopover>
           {varient === "create" && (
             <Hint label="Add Image">
               <Button
@@ -218,11 +220,13 @@ const Editor = ({
           )}
         </div>
       </div>
-      <div className="flex justify-end p-2">
-        <p className="text-xs text-muted-foreground font-bold">
-          Shifht + Return to add a new line
-        </p>
-      </div>
+      {varient === "create" && (
+        <div className={cn("flex justify-end py-1", isEmpty && "opacity-0")}>
+          <p className="text-xs text-muted-foreground font-bold">
+            Shifht + Return to add a new line
+          </p>
+        </div>
+      )}
     </div>
   );
 };

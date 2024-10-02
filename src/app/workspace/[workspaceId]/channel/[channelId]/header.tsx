@@ -124,7 +124,7 @@ export const Header = ({ name }: HeaderProps) => {
                   </p>
                 )}
                 <Dialog open={editOpen} onOpenChange={handleOpen}>
-                  <DialogTrigger>
+                  <DialogTrigger asChild>
                     {member?.role === "admin" && (
                       <button className="font-bold text-[#3758a5] hover:underline">
                         Edit

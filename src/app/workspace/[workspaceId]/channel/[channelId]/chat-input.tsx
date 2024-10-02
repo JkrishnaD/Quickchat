@@ -9,9 +9,9 @@ interface ChartInputProps {
 export const ChartInput = ({placeholder}:ChartInputProps) => {
   const editorRef = useRef<Quill | null>(null);
   return (
-    <div className="px-4 w-full">
+    <div className="px-4 pb-1 w-full">
       <Editor
-        varient="create"
+
         onSubmit={() => {}}
         placeholder={placeholder}
         innerRef={editorRef}
