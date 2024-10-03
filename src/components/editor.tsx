@@ -11,11 +11,12 @@ import { MdSend } from "react-icons/md";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import { Button } from "./ui/button";
-import { ImageIcon, Smile } from "lucide-react";
+import { ImageIcon, Smile, XIcon } from "lucide-react";
 import { Hint } from "./hint";
 import { Delta, Op } from "quill/core";
 import { cn } from "@/lib/utils";
 import { EmojiPopover } from "./ui/emoji-popover";
+import Image from "next/image";
 
 type EditorValue = {
   image: File | null;
@@ -45,6 +46,7 @@ const Editor = ({
 }: EditorProps) => {
   const [text, setText] = useState("");
   const [isToggleVisible, setIsToggleVisible] = useState(false);
+  const [image, setImage] = useState<File | null>(null);
 
   //ref are great to use in the useEffect to avoid the rerenders
   const containerRef = useRef<HTMLDivElement>(null);
@@ -53,7 +55,7 @@ const Editor = ({
   const defaultValueRef = useRef(defaultValue);
   const disabledRef = useRef(disabled);
   const quillRef = useRef<Quill | null>(null);
-
+  const imageElementRef = useRef<HTMLInputElement>(null);
   /*
   useLayoutEffect is simillar to useEffect but it prevents the rendering of the dom elements.
   it runs synchronously waits until to completes the actions and renders the page
@@ -153,8 +155,37 @@ const Editor = ({
 
   return (
     <div className="flex flex-col">
+      <input
+        type="file"
+        ref={imageElementRef}
+        onChange={(e) => setImage(e.target.files![0])}
+        className="hidden"
+      />
       <div className="flex flex-col border border-slate-200 rounded-md overflow-hidden focus-within:border-slate-300 focus-within:shadow-sm bg-white transition">
         <div ref={containerRef} className="h-full ql-custom" />
+        {!!image && (
+          <div className="p-2">
+            <div className="relative size-[100px] flex items-center justify-center group/image">
+              <Hint label="Remove Image">
+              <button
+                onClick={() => {
+                  setImage(null);
+                  imageElementRef.current!.value = "";
+                }}
+                className="hidden group-hover/image:flex items-center justify-center absolute -top-2.5 -right-2.5 bg-black/70 hover:bg-black text-white z-[4] rounded-full size-6 p-1"
+              >
+                <XIcon />
+              </button>
+              </Hint>
+              <Image
+                src={URL.createObjectURL(image)}
+                alt="Image"
+                fill
+                className="rounded overflow-hidden border object-cover"
+              />
+            </div>
+          </div>
+        )}
         <div className="px-2 pb-2 flex z-[5] gap-x-2">
           <Hint label={isToggleVisible ? "Show Formating" : "Hide Formating"}>
             <Button
@@ -177,7 +208,7 @@ const Editor = ({
                 variant="ghost"
                 size="iconSm"
                 disabled={disabled}
-                onClick={() => {}}
+                onClick={() => imageElementRef.current?.click()}
               >
                 <ImageIcon className="size-5" />
               </Button>
