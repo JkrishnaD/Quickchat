@@ -91,7 +91,16 @@ const Editor = ({
             enter: {
               key: "Enter",
               handler: () => {
-                return;
+                const text = quill.getText();
+                const addedImage = imageElementRef.current?.files?.[0] || null;
+
+                const isEmpty =
+                  !addedImage &&
+                  text.replace(/<(.|\n)*?>/g, "").trim().length === 0;
+
+                if (isEmpty) return;
+                const body = JSON.stringify(quill.getContents());
+                submitRef.current?.({ body, image: addedImage });
               },
             },
             shift_enter: {
@@ -145,7 +154,7 @@ const Editor = ({
     }
   };
 
-  const isEmpty = text.replace(/<(.|\n)*?>/g, "").trim().length === 0;
+  const isEmpty = !image && text.replace(/<(.|\n)*?>/g, "").trim().length === 0;
 
   //to add the emojio to the text
   const onEmojiSelect = (emoji: any) => {
@@ -161,21 +170,26 @@ const Editor = ({
         onChange={(e) => setImage(e.target.files![0])}
         className="hidden"
       />
-      <div className="flex flex-col border border-slate-200 rounded-md overflow-hidden focus-within:border-slate-300 focus-within:shadow-sm bg-white transition">
+      <div
+        className={cn(
+          "flex flex-col border border-slate-200 rounded-md overflow-hidden focus-within:border-slate-300 focus-within:shadow-sm bg-white transition",
+          disabled && "opacity-50"
+        )}
+      >
         <div ref={containerRef} className="h-full ql-custom" />
         {!!image && (
           <div className="p-2">
             <div className="relative size-[100px] flex items-center justify-center group/image">
               <Hint label="Remove Image">
-              <button
-                onClick={() => {
-                  setImage(null);
-                  imageElementRef.current!.value = "";
-                }}
-                className="hidden group-hover/image:flex items-center justify-center absolute -top-2.5 -right-2.5 bg-black/70 hover:bg-black text-white z-[4] rounded-full size-6 p-1"
-              >
-                <XIcon />
-              </button>
+                <button
+                  onClick={() => {
+                    setImage(null);
+                    imageElementRef.current!.value = "";
+                  }}
+                  className="hidden group-hover/image:flex items-center justify-center absolute -top-2.5 -right-2.5 bg-black/70 hover:bg-black text-white z-[4] rounded-full size-6 p-1"
+                >
+                  <XIcon />
+                </button>
               </Hint>
               <Image
                 src={URL.createObjectURL(image)}
@@ -219,7 +233,7 @@ const Editor = ({
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => {}}
+                onClick={onCancel}
                 className="font-semibold"
               >
                 Cancel
@@ -244,7 +258,12 @@ const Editor = ({
               )}
               size="iconSm"
               disabled={disabled || isEmpty}
-              onClick={() => {}}
+              onClick={() =>
+                onSubmit({
+                  body: JSON.stringify(quillRef.current?.getContents()),
+                  image,
+                })
+              }
             >
               <MdSend className="size-5" />
             </Button>
