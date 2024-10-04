@@ -53,7 +53,6 @@ export const ChartInput = ({ placeholder }: ChartInputProps) => {
 
       if (image) {
         const url = await generateUrl({}, { throwError: true });
-        console.log({ url });
         if (!url) {
           throw new Error("Url not found");
         }
@@ -63,7 +62,7 @@ export const ChartInput = ({ placeholder }: ChartInputProps) => {
           headers: { "Content-Type": image.type },
           body: image,
         });
-        console.log({ result });
+
         if (!result.ok) {
           throw new Error("Url not Found");
         }
