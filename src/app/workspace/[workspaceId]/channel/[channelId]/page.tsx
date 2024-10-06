@@ -4,14 +4,17 @@ import { useChannelId } from "@/hooks/use-channel-id";
 import { Loader, TriangleAlert } from "lucide-react";
 import { Header } from "./header";
 import { ChartInput } from "./chat-input";
+import { useGetMessage } from "@/features/messages/use-get-messages";
 
 const ChannelPage = () => {
-  const id = useChannelId();
+  const channelId = useChannelId();
 
-  if (!id) {
+  if (!channelId) {
     return null;
   }
-  const { data, isLoading } = useGetChannel({ id });
+  const { results } = useGetMessage({ channelId });
+  console.log(results)
+  const { data, isLoading } = useGetChannel({ id: channelId });
 
   if (isLoading) {
     return (
@@ -31,8 +34,10 @@ const ChannelPage = () => {
   return (
     <div className="flex flex-col h-full">
       <Header name={data.name} />
-      <div className="flex-1"/>
-        <ChartInput placeholder={`Message in #${data.name}`} />
+      <div className="flex-1 text-xs" >
+        {JSON.stringify(results)}
+      </div>
+      <ChartInput placeholder={`Message in #${data.name}`} />
     </div>
   );
 };
