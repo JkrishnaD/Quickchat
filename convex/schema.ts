@@ -21,6 +21,11 @@ const schema = defineSchema({
     name: v.string(),
     workspaceId: v.id("workspaces"),
   }).index("by_workspace_id", ["workspaceId"]),
+  conversations: defineTable({
+    workspaceId: v.id("workspaces"),
+    memberOneId: v.id("members"),
+    memberTwoId: v.id("members"),
+  }).index("by_workspace_id", ["workspaceId"]),
   messages: defineTable({
     body: v.string(),
     image: v.optional(v.id("_storage")),
@@ -28,9 +33,27 @@ const schema = defineSchema({
     workspaceId: v.id("workspaces"),
     channelId: v.optional(v.id("channels")),
     parentMessageId: v.optional(v.id("messages")),
+    conversationId: v.optional(v.id("conversations")),
     updatedAt: v.number(),
-    //add the conversation id for one to one messages/DM's
-  }),
+  })
+    .index("by_workspace_id", ["workspaceId"])
+    .index("by_channel_id", ["channelId"])
+    .index("by_member_id", ["memberId"])
+    .index("by_conversation_id", ["conversationId"])
+    .index("by_channel_id_parent_message_id_conversation_id", [
+      "channelId",
+      "conversationId",
+      "parentMessageId",
+    ]),
+  reactions: defineTable({
+    workspaceId: v.id("workspaces"),
+    messageId: v.id("messages"),
+    memberId: v.id("members"),
+    value: v.string(),
+  })
+    .index("by_workspace_id", ["workspaceId"])
+    .index("by_member_id", ["memberId"])
+    .index("by_message_id", ["messageId"]),
 });
 
 export default schema;
