@@ -10,7 +10,7 @@ interface UseGetMessageProps {
   parentMessageId?: Id<"messages">;
 }
 
-export type GetMessageType = (typeof api.messages.get._returnType)["page"];
+export type GetMessageReturnType = (typeof api.messages.get._returnType)["page"];
 
 export const useGetMessage = ({
   channelId,

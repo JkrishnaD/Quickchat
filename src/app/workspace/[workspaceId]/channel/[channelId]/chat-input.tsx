@@ -7,7 +7,6 @@ import Quill from "quill";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { Id } from "../../../../../../convex/_generated/dataModel";
-import { generateUploadUrl } from "../../../../../../convex/upload";
 
 const Editor = dynamic(() => import("@/components/editor"), { ssr: false });
 

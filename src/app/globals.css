@@ -115,13 +115,18 @@ body,
 
 .ql-editor {
   line-height: 22px !important;
-  padding: 8px 12px !important;
+  padding: 10px 12px !important;
   color: #1d1d1d !important;
   font-weight: 500 !important;
   font-family: "Lato" sans-serif !important;
   font-size: 15px !important;
 }
-
+.ql-editor-message {
+  padding: 1px 10px !important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
+  color: #1d1d1d !important;
+}
 .ql-editor a {
   color: #1264a3;
 }
@@ -131,7 +136,7 @@ body,
 }
 
 .ql-render {
-  padding: o !important;
+  padding: 1 !important;
 }
 
 .ql-editor:before {
@@ -142,4 +147,8 @@ body,
   font-size: 14px !important;
   font-weight: 400 !important;
   @apply truncate;
+}
+.messages-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #dcdcdc #f8f8f8;
 }
