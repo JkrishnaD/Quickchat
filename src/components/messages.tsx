@@ -30,7 +30,7 @@ interface MessageProps {
   isEditing: boolean;
   setIsEditing?: (id: Id<"messages"> | null) => void;
   isCompact?: boolean;
-  hideThread?: boolean;
+  hideThreadButton?: boolean;
 }
 export const Message = ({
   id,
@@ -47,7 +47,7 @@ export const Message = ({
   isEditing,
   setIsEditing,
   isCompact,
-  hideThread,
+  hideThreadButton,
 }: MessageProps) => {
   const avatarFallback = authorName!.charAt(0).toUpperCase();
 
