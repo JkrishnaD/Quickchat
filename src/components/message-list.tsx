@@ -55,7 +55,7 @@ export const MessageList = ({
     },
     {} as Record<string, typeof data>
   );
-  console.log(groupMessages);
+
   return (
     <div className="flex flex-col-reverse flex-1 pb-4 overflow-y-auto messages-scrollbar ">
       {Object.entries(groupMessages || {}).map(([dateKey, messages]) => (
@@ -70,7 +70,7 @@ export const MessageList = ({
             const prevMessage = messages[index - 1];
             const isCompact =
               prevMessage &&
-              prevMessage.user?._id === message.user._id &&
+              prevMessage.user._id === message.user._id &&
               differenceInMinutes(
                 new Date(message._creationTime),
                 new Date(prevMessage._creationTime)
@@ -93,7 +93,7 @@ export const MessageList = ({
                 threadImage={message.threadImage}
                 threadTimeStamp={message.threadStamp}
                 isEditing={editingId === message._id}
-                setIsEditing={setEditingId}
+                setEditingId={setEditingId}
                 hideThreadButton={variant === "thread"}
                 isCompact={isCompact}
               />

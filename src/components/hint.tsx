@@ -14,7 +14,7 @@ interface HintProps {
 export const Hint = ({ label, children, side, align }: HintProps) => {
   return (
     <TooltipProvider>
-      <Tooltip delayDuration={500}>
+      <Tooltip delayDuration={100}>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
         <TooltipContent
           side={side}

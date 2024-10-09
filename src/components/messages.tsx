@@ -4,6 +4,7 @@ import { format, isToday, isYesterday } from "date-fns";
 import { Hint } from "./hint";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Thumbnail } from "./thumbnail";
+import { Toolbar } from "./toolbar";
 
 const MessageRenderer = dynamic(() => import("@/components/message-renderer"), {
   ssr: false,
@@ -28,7 +29,7 @@ interface MessageProps {
   threadImage?: string;
   threadTimeStamp?: number;
   isEditing: boolean;
-  setIsEditing?: (id: Id<"messages"> | null) => void;
+  setEditingId: (id: Id<"messages"> | null) => void;
   isCompact?: boolean;
   hideThreadButton?: boolean;
 }
@@ -37,6 +38,7 @@ export const Message = ({
   memberId,
   authorName,
   authorImage,
+  isAuthor,
   body,
   image,
   createdAt,
@@ -45,7 +47,7 @@ export const Message = ({
   threadImage,
   threadTimeStamp,
   isEditing,
-  setIsEditing,
+  setEditingId,
   isCompact,
   hideThreadButton,
 }: MessageProps) => {
@@ -54,7 +56,7 @@ export const Message = ({
   if (isCompact) {
     return (
       <div className="flex flex-col px-5 hover:bg-gray-50 group relative items-start">
-        <div className="flex items-start">
+        <div className="flex">
           <Hint label={formatFullTime(new Date(createdAt))}>
             <button className="text-[10px] group-hover:opacity-100 opacity-0 hover:underline text-muted-foreground font-semibold px-1">
               {format(new Date(createdAt), "hh:mm")}
@@ -62,7 +64,7 @@ export const Message = ({
           </Hint>
           <div className="flex flex-col w-full items-center py-0.5">
             <MessageRenderer value={body} />
-            <Thumbnail url={image}/>
+            <Thumbnail url={image} />
             {updatedAt ? (
               <span className="text-xs text-muted-foreground">(edited)</span>
             ) : null}
@@ -99,12 +101,23 @@ export const Message = ({
             </Hint>
           </div>
           <MessageRenderer value={body} />
-          <Thumbnail url={image}/>
+          <Thumbnail url={image} />
           {updatedAt ? (
             <span className="text-xs text-muted-foreground">(edited)</span>
           ) : null}
         </div>
       </div>
+      {!isEditing && (
+        <Toolbar
+          isAuthor={isAuthor}
+          isPending={false}
+          handleEdit={() => setEditingId(id)}
+          handleThread={() => {}}
+          handleDelete={() => {}}
+          hideThreadButton={hideThreadButton}
+          handleReaction={() => {}}
+        />
+      )}
     </div>
   );
 };
