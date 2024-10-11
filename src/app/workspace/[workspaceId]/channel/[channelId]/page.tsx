@@ -4,8 +4,9 @@ import { useChannelId } from "@/hooks/use-channel-id";
 import { Loader, TriangleAlert } from "lucide-react";
 import { Header } from "./header";
 import { ChartInput } from "./chat-input";
-import { useGetMessage } from "@/features/messages/use-get-messages";
+
 import { MessageList } from "@/components/message-list";
+import { useGetMessage } from "@/features/messages/api/use-get-messages";
 
 const ChannelPage = () => {
   const channelId = useChannelId();

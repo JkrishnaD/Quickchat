@@ -19,7 +19,7 @@ import { EmojiPopover } from "./ui/emoji-popover";
 import Image from "next/image";
 
 type EditorValue = {
-  image: File | null;
+  image?: File | null;
   body: string;
 };
 
@@ -242,7 +242,7 @@ const Editor = ({
                 className="bg-[#007a5a] hover:bg-[#007a5a]/80 font-semibold"
                 size="sm"
                 disabled={disabled || isEmpty}
-                onClick={() => {}}
+                onClick={()=> onSubmit({body:JSON.stringify(quillRef.current?.getContents())})}
               >
                 Save
               </Button>

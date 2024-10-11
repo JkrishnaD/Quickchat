@@ -30,13 +30,18 @@ export const Toolbar = ({
           onEmojiSelect={(emoji) => handleReaction(emoji.native)}
           hint="Add Reaction"
         >
-          <Button variant="ghost" size="iconSm">
+          <Button variant="ghost" size="iconSm" disabled={isPending}>
             <Smile className="size-4" />
           </Button>
         </EmojiPopover>
         {!hideThreadButton && (
           <Hint label="Reply in Thread">
-            <Button variant="ghost" size="iconSm">
+            <Button
+              variant="ghost"
+              size="iconSm"
+              onClick={handleThread}
+              disabled={isPending}
+            >
               <MessageSquareText className="size-4" />
             </Button>
           </Hint>
@@ -44,12 +49,22 @@ export const Toolbar = ({
         {isAuthor && (
           <>
             <Hint label="Edit Message">
-              <Button variant="ghost" size="iconSm">
+              <Button
+                variant="ghost"
+                size="iconSm"
+                onClick={handleEdit}
+                disabled={isPending}
+              >
                 <Pencil className="size-4" />
               </Button>
             </Hint>
             <Hint label="Delete">
-              <Button variant="ghost" size="iconSm">
+              <Button
+                variant="ghost"
+                size="iconSm"
+                onClick={handleDelete}
+                disabled={isPending}
+              >
                 <Trash className="size-4" />
               </Button>
             </Hint>
