@@ -168,6 +168,8 @@ export const get = query({
       ).filter(
         (message): message is NonNullable<typeof message> => message !== null
       ),
+      isDone: results.isDone,
+      continueCursor: results.continueCursor,
     };
   },
 });
