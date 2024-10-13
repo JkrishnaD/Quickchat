@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useRemoveMesssage } from "@/features/messages/api/use-delete-message";
 import { useConfirm } from "@/hooks/use-confirm";
+import { usePanel } from "@/hooks/use-panel";
 
 const MessageRenderer = dynamic(() => import("@/components/message-renderer"), {
   ssr: false,
@@ -57,6 +58,8 @@ export const Message = ({
   isCompact,
   hideThreadButton,
 }: MessageProps) => {
+  const { parentMessageId, onOpenMessage, onClose } = usePanel();
+
   const [ConfirmDialog, confirm] = useConfirm(
     "Are you sure!",
     "Once message deleted can't be restored"
@@ -92,6 +95,9 @@ export const Message = ({
       {
         onSuccess: () => {
           toast.success("Message Deleted");
+          if (parentMessageId === id) {
+            onClose();
+          }
         },
         onError: () => {
           toast.error("Failed to Delete");
@@ -145,7 +151,7 @@ export const Message = ({
               isAuthor={isAuthor}
               isPending={isUpdatingMessage}
               handleEdit={() => setEditingId(id)}
-              handleThread={() => {}}
+              handleThread={() => onOpenMessage(id)}
               handleDelete={handleDelete}
               hideThreadButton={hideThreadButton}
               handleReaction={() => {}}
@@ -215,7 +221,7 @@ export const Message = ({
             isAuthor={isAuthor}
             isPending={isUpdatingMessage}
             handleEdit={() => setEditingId(id)}
-            handleThread={() => {}}
+            handleThread={() => onOpenMessage(id)}
             handleDelete={handleDelete}
             hideThreadButton={hideThreadButton}
             handleReaction={() => {}}

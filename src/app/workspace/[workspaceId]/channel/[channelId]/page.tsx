@@ -6,7 +6,8 @@ import { Header } from "./header";
 import { ChartInput } from "./chat-input";
 
 import { MessageList } from "@/components/message-list";
-import { useGetMessage } from "@/features/messages/api/use-get-messages";
+import { useGetMessages } from "@/features/messages/api/use-get-messages";
+
 
 const ChannelPage = () => {
   const channelId = useChannelId();
@@ -14,7 +15,7 @@ const ChannelPage = () => {
   if (!channelId) {
     return null;
   }
-  const { results, status, loadMore } = useGetMessage({ channelId });
+  const { results, status, loadMore } = useGetMessages({ channelId });
 
   const { data: channelData, isLoading } = useGetChannel({ id: channelId });
 

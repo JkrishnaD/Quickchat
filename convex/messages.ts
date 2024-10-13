@@ -72,6 +72,37 @@ const getMember = async (
     .unique();
 };
 
+export const getById = query({
+  args: {
+    id: v.id("messages"),
+  },
+  handler: async (ctx, args) => {
+    const userId = await auth.getUserId(ctx);
+    if (!userId) throw new Error("Unauthorised");
+
+    const message = await ctx.db.get(args.id);
+    if (!message) return null;
+
+    const currentMember = getMember(ctx, message.workspaceId, userId);
+    if(!currentMember) return null
+    
+    const member = await populateMember(ctx, message.memberId);
+    if (!member) return null;
+
+    const user = await populateUser(ctx, member.userId);
+    if (!user) return null;
+
+    return {
+      ...message,
+      user,
+      member,
+      image: message.image
+        ? await ctx.storage.getUrl(message.image)
+        : undefined,
+    };
+  },
+});
+
 export const get = query({
   args: {
     channelId: v.optional(v.id("channels")),
