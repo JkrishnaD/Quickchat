@@ -168,7 +168,7 @@ export const Message = ({
       <div
         className={cn(
           "flex flex-col p-2 px-4 gap-2 hover:bg-gray-50 group relative",
-          isEditing && "bg-[#f2c74433] hover:bg-[#f2c74433]",
+          isEditing && "bg-[#4498f233] hover:bg-[#4498f233]",
           isRemovingMessage &&
             "bg-rose-500 transform transition-all scale-y-0 origin-bottom duration-300"
         )}
