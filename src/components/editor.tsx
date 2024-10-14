@@ -28,7 +28,7 @@ interface EditorProps {
   onSubmit: ({ image, body }: EditorValue) => void;
   onCancel?: () => void;
   placeholder?: string;
-  defaultValue: Delta | Op[];
+  defaultValue?: Delta | Op[];
   innerRef?: MutableRefObject<Quill | null>;
   disabled?: boolean;
 }
@@ -123,7 +123,7 @@ const Editor = ({
       innerRef.current?.focus();
     }
 
-    quill.setContents(defaultValueRef.current);
+    quill.setContents(defaultValueRef.current ?? []);
     setText(quill.getText()); //quill.getText gets the text from the text area and update constantly
 
     //to detect the text change in the text area

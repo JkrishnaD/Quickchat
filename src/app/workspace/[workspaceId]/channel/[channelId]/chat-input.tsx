@@ -38,7 +38,7 @@ export const ChartInput = ({ placeholder }: ChartInputProps) => {
     image,
   }: {
     body: string;
-    image: File | null;
+    image?: File | null;
   }) => {
     try {
       editorRef.current?.enable(false);

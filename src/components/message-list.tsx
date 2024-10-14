@@ -8,6 +8,7 @@ import { useWorkspaceId } from "@/hooks/use-workspace-id";
 import { useCurrentMember } from "@/features/members/api/use-current-member";
 import { GetMessageReturnType } from "@/features/messages/api/use-get-messages";
 import { Loader } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const TIME_THRESHOLD = 5;
 
@@ -59,7 +60,12 @@ export const MessageList = ({
   );
 
   return (
-    <div className="flex flex-col-reverse flex-1 pb-4 overflow-y-auto messages-scrollbar ">
+    <div
+      className={cn(
+        "flex flex-col-reverse flex-1 pb-4 overflow-y-auto messages-scrollbar",
+        variant === "thread" && "flex-col"
+      )}
+    >
       {Object.entries(groupMessages || {}).map(([dateKey, messages]) => (
         <div key={dateKey}>
           <div className="text-center mr-2 relative">
