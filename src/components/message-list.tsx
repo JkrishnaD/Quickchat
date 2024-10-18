@@ -9,6 +9,7 @@ import { useCurrentMember } from "@/features/members/api/use-current-member";
 import { GetMessageReturnType } from "@/features/messages/api/use-get-messages";
 import { Loader } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ConversationHero } from "./conversation-hero";
 
 const TIME_THRESHOLD = 5;
 
@@ -139,6 +140,9 @@ export const MessageList = ({
       </div>
       {variant === "channel" && channelName && channelCreationTime && (
         <ChannelHero name={channelName} createdAt={channelCreationTime} />
+      )}
+      {variant === "conversation" && memberName && (
+        <ConversationHero name={memberName} image={memberImage}/>
       )}
     </div>
   );
