@@ -14,7 +14,7 @@ import { useGetWorkspace } from "@/features/workspace/api/use-get-workspac";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
 import { Info, Search } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export const Toolbar = () => {
   const [open, setOpen] = useState(false);
@@ -23,16 +23,16 @@ export const Toolbar = () => {
   const { data: channels } = useGetChannels({ workspaceId });
   const { data: members } = useGetMembers({ workspaceId });
 
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (e.key === "j" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setOpen((open) => !open);
-      }
-      document.addEventListener("keydown", down);
-      return () => document.removeEventListener("keydown", down);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const down = (e: KeyboardEvent) => {
+  //     if (e.key === "j" && (e.metaKey || e.ctrlKey)) {
+  //       e.preventDefault();
+  //       setOpen((open) => !open);
+  //     }
+  //     document.addEventListener("keydown", down);
+  //     return () => document.removeEventListener("keydown", down);
+  //   };
+  // }, []);
 
   return (
     <nav className="bg-[#153377] flex items-center justify-center h-12 p-1.5">
@@ -51,7 +51,7 @@ export const Toolbar = () => {
             <CommandList>
               <CommandGroup heading="channels">
                 {channels?.map((channel) => (
-                  <CommandItem asChild>
+                  <CommandItem key={channel._id} asChild>
                     <Link
                       href={`/workspace/${workspaceId}/channel/${channel._id}`}
                       onClick={() => setOpen(false)}
@@ -64,7 +64,7 @@ export const Toolbar = () => {
               <CommandSeparator />
               <CommandGroup heading="members">
                 {members?.map((member) => (
-                  <CommandItem asChild>
+                  <CommandItem key={member._id} asChild>
                     <Link
                       href={`/workspace/${workspaceId}/member/${member._id}`}
                       onClick={() => setOpen(false)}

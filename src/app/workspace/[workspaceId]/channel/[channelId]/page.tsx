@@ -12,11 +12,7 @@ import { useGetMessages } from "@/features/messages/api/use-get-messages";
 const ChannelPage = () => {
   const channelId = useChannelId();
 
-  if (!channelId) {
-    return null;
-  }
   const { results, status, loadMore } = useGetMessages({ channelId });
-
   const { data: channelData, isLoading } = useGetChannel({ id: channelId });
 
   if (isLoading || status === "LoadingFirstPage") {

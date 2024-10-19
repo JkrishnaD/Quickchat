@@ -51,7 +51,7 @@ export const ChartInput = ({ placeholder }: ChartInputProps) => {
       };
 
       if (image) {
-        const url = await generateUrl({}, { throwError: true });
+        const url = await generateUrl({ throwError: true });
         if (!url) {
           throw new Error("Url not found");
         }

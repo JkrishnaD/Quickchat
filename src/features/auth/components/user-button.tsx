@@ -24,7 +24,7 @@ export const UserButton = () => {
   if (!data) {
     return null;
   }
-  const { name, image, email } = data;
+  const { name } = data;
   const avatarFallback = name!.charAt(0).toUpperCase();
   return (
     <div>

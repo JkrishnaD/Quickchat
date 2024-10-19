@@ -2,10 +2,10 @@ import { UserButton } from "@/features/auth/components/user-button";
 import { WorkspaceSwitcher } from "./workspace-switcher";
 import { SidebarButtons } from "./sidebar-buttons";
 import { Bell, Home, MessagesSquareIcon, MoreHorizontal } from "lucide-react";
-import { usePathname } from "next/navigation";
+
 
 export const Sidebar = () => {
-  const pathname = usePathname();
+
   return (
     <aside className="bg-[#153377] w-[70px] flex flex-col items-center h-full overflow-hidden">
       <div className="flex-1 flex flex-col items-center">

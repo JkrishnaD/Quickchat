@@ -54,7 +54,7 @@ export const ChartInput = ({
       };
 
       if (image) {
-        const url = await generateUrl({}, { throwError: true });
+        const url = await generateUrl({ throwError: true });
         if (!url) {
           throw new Error("Url not found");
         }

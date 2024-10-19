@@ -168,7 +168,7 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
             {currentMember?.role && currentMember._id !== member._id ? (
               <>
                 <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
+                  <DropdownMenuTrigger asChild disabled={isUpdateLoading}>
                     <Button
                       variant="outline"
                       className="w-full capitalize items-center space-x-1"
