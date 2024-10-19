@@ -14,15 +14,17 @@ import { WorkspaceSidebar } from "./worksapce-sidebar";
 import { Loader } from "lucide-react";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { Thread } from "@/features/messages/components/Thread";
+import { Profile } from "@/features/messages/components/Profile";
 
 interface WorkspaceIdLayoutProps {
   children: React.ReactNode;
 }
 
 const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
-  const { parentMessageId, onClose } = usePanel();
+  const { parentMessageId, onCloseMessage, profileMemberId, onCloseProfile } =
+    usePanel();
 
-  const showPanel = !!parentMessageId;
+  const showPanel = !!parentMessageId || !!profileMemberId;
 
   return (
     <div className="h-full">
@@ -45,7 +47,17 @@ const WorkspaceIdLayout = ({ children }: WorkspaceIdLayoutProps) => {
               <ResizablePanel minSize={20} defaultSize={29}>
                 {parentMessageId ? (
                   <div className="h-full">
-                    <Thread messageId={parentMessageId as Id<"messages">} onClose={onClose} />
+                    <Thread
+                      messageId={parentMessageId as Id<"messages">}
+                      onClose={onCloseMessage}
+                    />
+                  </div>
+                ) : profileMemberId ? (
+                  <div className="h-full">
+                    <Profile
+                      memberId={profileMemberId as Id<"members">}
+                      onClose={onCloseProfile}
+                    />
                   </div>
                 ) : (
                   <div className="flex justify-center items-center h-full">

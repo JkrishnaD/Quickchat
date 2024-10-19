@@ -24,7 +24,7 @@ const formatFullTime = (date: Date) => {
 
 interface MessageProps {
   id: Id<"messages">;
-  memberId?: Id<"members">;
+  memberId: Id<"members">;
   authorName?: string;
   isAuthor: boolean;
   authorImage?: string;
@@ -61,7 +61,14 @@ export const Message = ({
   isCompact,
   hideThreadButton,
 }: MessageProps) => {
-  const { parentMessageId, onOpenMessage, onClose } = usePanel();
+  const {
+    parentMessageId,
+    onOpenMessage,
+    onCloseMessage,
+    profileMemberId,
+    onCloseProfile,
+    onOPenProfile,
+  } = usePanel();
 
   const [ConfirmDialog, confirm] = useConfirm(
     "Are you sure!",
@@ -73,6 +80,8 @@ export const Message = ({
     useUpdateMessage();
   const { mutate: removeMessage, isPending: isRemovingMessage } =
     useRemoveMesssage();
+
+  const isPending = isUpdatingMessage || isRemovingMessage;
 
   const handleUpdate = ({ body }: { body: string }) => {
     updateMessage(
@@ -99,7 +108,7 @@ export const Message = ({
         onSuccess: () => {
           toast.success("Message Deleted");
           if (parentMessageId === id) {
-            onClose();
+            onCloseMessage();
           }
         },
         onError: () => {
@@ -126,7 +135,7 @@ export const Message = ({
               <Editor
                 varient="update"
                 onSubmit={handleUpdate}
-                disabled={isUpdatingMessage}
+                disabled={isPending}
                 onCancel={() => setEditingId(null)}
                 defaultValue={JSON.parse(body)}
               />
@@ -158,7 +167,7 @@ export const Message = ({
           {!isEditing && (
             <Toolbar
               isAuthor={isAuthor}
-              isPending={isUpdatingMessage}
+              isPending={isPending}
               handleEdit={() => setEditingId(id)}
               handleThread={() => onOpenMessage(id)}
               handleDelete={handleDelete}
@@ -183,10 +192,12 @@ export const Message = ({
         )}
       >
         <div className="flex items-start">
-          <button>
-            <Avatar className="size-8 cursor-pointer hover:opacity-75 mr-1 ">
+          <button onClick={()=>onOPenProfile(memberId)}>
+            <Avatar
+              className="size-8 cursor-pointer hover:opacity-75 mr-1 "
+            >
               <AvatarImage src={authorImage} />
-              <AvatarFallback className="text-white font-bold bg-sky-500 text-lg ">
+              <AvatarFallback>
                 {avatarFallback}
               </AvatarFallback>
             </Avatar>
@@ -205,7 +216,7 @@ export const Message = ({
             <div className="flex flex-col w-full overflow-hidden ml-1">
               <div className="text-xs">
                 <button
-                  onClick={() => {}}
+                  onClick={() => onOPenProfile(memberId)}
                   className="font-bold text-primary hover:underline"
                 >
                   {authorName}
