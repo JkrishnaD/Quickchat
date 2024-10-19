@@ -148,6 +148,13 @@ export const Thread = ({ messageId, onClose }: ThreadProps) => {
         </button>
       </div>
       <div className="flex flex-col-reverse flex-1 pb-4 overflow-y-auto messages-scrollbar">
+      <MessageList
+          variant="thread"
+          data={results}
+          loadMore={loadMore}
+          isLoadingMore={status === "LoadingMore"}
+          canLoadMore={status === "CanLoadMore"}
+        />
         <Message
           id={message._id}
           memberId={message.memberId}
@@ -161,13 +168,6 @@ export const Thread = ({ messageId, onClose }: ThreadProps) => {
           isEditing={editingId === message._id}
           setEditingId={setEditingId}
           hideThreadButton
-        />
-         <MessageList
-          variant="thread"
-          data={results}
-          loadMore={loadMore}
-          isLoadingMore={status === "LoadingMore"}
-          canLoadMore={status === "CanLoadMore"}
         />
       </div>
       <div>

@@ -147,7 +147,7 @@ export const Message = ({
                   {format(new Date(createdAt), "hh:mm")}
                 </button>
               </Hint>
-              <div className="flex flex-col w-fullpy-0.5">
+              <div className="flex flex-col w-full py-0.5">
                 <MessageRenderer value={body} />
                 <Thumbnail url={image} />
                 {updatedAt ? (
@@ -160,6 +160,7 @@ export const Message = ({
                   count={threadCount}
                   image={threadImage}
                   timeStamp={threadTimeStamp}
+                  onClick={()=>onOpenMessage(id)}
                 />
               </div>
             </div>
