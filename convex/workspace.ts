@@ -248,15 +248,31 @@ export const remove = mutation({
     //this is used because convex by default didn't perform any cascade functions so deleting the
     //workspace we need to remove every member present in the workspace.
 
-    const [members] = await Promise.all([
+    const [members, conversations, channels] = await Promise.all([
       ctx.db
         .query("members")
+        .withIndex("by_workspace_id", (q) => q.eq("workspaceId", args.id))
+        .collect(),
+      ctx.db
+        .query("channels")
+        .withIndex("by_workspace_id", (q) => q.eq("workspaceId", args.id))
+        .collect(),
+      ctx.db
+        .query("conversations")
         .withIndex("by_workspace_id", (q) => q.eq("workspaceId", args.id))
         .collect(),
     ]);
 
     for (const member of members) {
       ctx.db.delete(member._id);
+    }
+
+    for (const channel of channels) {
+      ctx.db.delete(channel._id);
+    }
+    
+    for (const conversation of conversations) {
+      ctx.db.delete(conversation._id);
     }
     await ctx.db.delete(args.id);
 
