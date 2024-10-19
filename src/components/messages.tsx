@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { useRemoveMesssage } from "@/features/messages/api/use-delete-message";
 import { useConfirm } from "@/hooks/use-confirm";
 import { usePanel } from "@/hooks/use-panel";
+import { ThreadBar } from "./thread-bar";
 
 const MessageRenderer = dynamic(() => import("@/components/message-renderer"), {
   ssr: false,
@@ -32,6 +33,7 @@ interface MessageProps {
   image: string | null | undefined;
   createdAt: Doc<"messages">["_creationTime"];
   updatedAt: Doc<"messages">["updatedAt"];
+  threadName?: string;
   threadCount?: number;
   threadImage?: string;
   threadTimeStamp?: number;
@@ -50,6 +52,7 @@ export const Message = ({
   image,
   createdAt,
   updatedAt,
+  threadName,
   threadCount,
   threadImage,
   threadTimeStamp,
@@ -112,7 +115,7 @@ export const Message = ({
         <ConfirmDialog />
         <div
           className={cn(
-            "flex flex-col px-5 hover:bg-gray-50 group relative items-start",
+            "flex flex-col px-5 hover:bg-gray-100 group relative items-start",
             isEditing && "bg-[#f2c74433] hover:bg-[#f2c74433]",
             isRemovingMessage &&
               "bg-rose-500 transform transition-all scale-y-0 origin-bottom duration-300"
@@ -135,7 +138,7 @@ export const Message = ({
                   {format(new Date(createdAt), "hh:mm")}
                 </button>
               </Hint>
-              <div className="flex flex-col w-full items-center py-0.5">
+              <div className="flex flex-col w-fullpy-0.5">
                 <MessageRenderer value={body} />
                 <Thumbnail url={image} />
                 {updatedAt ? (
@@ -143,6 +146,12 @@ export const Message = ({
                     (edited)
                   </span>
                 ) : null}
+                <ThreadBar
+                  name={threadName}
+                  count={threadCount}
+                  image={threadImage}
+                  timeStamp={threadTimeStamp}
+                />
               </div>
             </div>
           )}
@@ -167,7 +176,7 @@ export const Message = ({
       <ConfirmDialog />
       <div
         className={cn(
-          "flex flex-col p-2 px-4 gap-2 hover:bg-gray-50 group relative",
+          "flex flex-col p-2 px-4 gap-2 hover:bg-gray-100 group relative",
           isEditing && "bg-[#4498f233] hover:bg-[#4498f233]",
           isRemovingMessage &&
             "bg-rose-500 transform transition-all scale-y-0 origin-bottom duration-300"
@@ -213,6 +222,13 @@ export const Message = ({
               {updatedAt ? (
                 <span className="text-xs text-muted-foreground">(edited)</span>
               ) : null}
+              <ThreadBar
+                name={threadName}
+                count={threadCount}
+                image={threadImage}
+                timeStamp={threadTimeStamp}
+                onClick={() => onOpenMessage(id)}
+              />
             </div>
           )}
         </div>

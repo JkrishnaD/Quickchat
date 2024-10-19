@@ -2,7 +2,7 @@ import { QueryCtx, query } from "./_generated/server";
 import { v } from "convex/values";
 import { mutation } from "./_generated/server";
 import { auth } from "./auth";
-import { Doc, Id } from "./_generated/dataModel";
+import { Id } from "./_generated/dataModel";
 import { paginationOptsValidator } from "convex/server";
 
 //populateThread
@@ -19,6 +19,7 @@ const populateThread = async (ctx: QueryCtx, messageId: Id<"messages">) => {
       count: 0,
       image: undefined,
       timeStamp: 0,
+      name: "",
     };
   }
   const lastMessage = messages[messages.length - 1];
@@ -29,6 +30,7 @@ const populateThread = async (ctx: QueryCtx, messageId: Id<"messages">) => {
       count: 0,
       image: undefined,
       timeStamp: 0,
+      name: "",
     };
   }
   const lastMessageUser = await populateUser(ctx, lastMessageMember.userId);
@@ -36,7 +38,8 @@ const populateThread = async (ctx: QueryCtx, messageId: Id<"messages">) => {
   return {
     count: messages.length,
     image: lastMessageUser?.image,
-    time: lastMessage._creationTime,
+    timeStamp: lastMessage._creationTime,
+    name: lastMessageUser?.name,
   };
 };
 
@@ -84,8 +87,8 @@ export const getById = query({
     if (!message) return null;
 
     const currentMember = getMember(ctx, message.workspaceId, userId);
-    if(!currentMember) return null
-    
+    if (!currentMember) return null;
+
     const member = await populateMember(ctx, message.memberId);
     if (!member) return null;
 
@@ -190,6 +193,7 @@ export const get = query({
               member,
               user,
               reactions,
+              threadName: thread.name,
               threadCount: thread.count,
               threadImage: thread.image,
               threadStamp: thread.timeStamp,

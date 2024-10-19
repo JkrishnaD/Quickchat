@@ -39,7 +39,8 @@ export const Thread = ({ messageId, onClose }: ThreadProps) => {
 
   const [editingId, setEditingId] = useState<Id<"messages"> | null>(null);
 
-  const { mutate: generateUrl,isPending:imageLoading } = useGenerateUploadUrl();
+  const { mutate: generateUrl, isPending: imageLoading } =
+    useGenerateUploadUrl();
   const { mutate: createMessage, isPending: messagePending } =
     useCreateMessage();
 
@@ -47,6 +48,9 @@ export const Thread = ({ messageId, onClose }: ThreadProps) => {
     channelId,
     parentMessageId: messageId,
   });
+  const isLoadingMore = status === "LoadingMore";
+  const canLoadMore = status === "CanLoadMore";
+
   const { data: member } = useCurrentMember({ workspaceId });
   const { data: message, isLoading: messageLoading } = useGetMessage({
     id: messageId,
@@ -143,6 +147,7 @@ export const Thread = ({ messageId, onClose }: ThreadProps) => {
           <XIcon className="text-muted-foreground size-5" />
         </button>
       </div>
+      <div className="flex flex-col-reverse flex-1 pb-4 overflow-y-auto messages-scrollbar">
         <Message
           id={message._id}
           memberId={message.memberId}
@@ -157,19 +162,48 @@ export const Thread = ({ messageId, onClose }: ThreadProps) => {
           setEditingId={setEditingId}
           hideThreadButton
         />
-        <MessageList
+         <MessageList
           variant="thread"
           data={results}
           loadMore={loadMore}
           isLoadingMore={status === "LoadingMore"}
           canLoadMore={status === "CanLoadMore"}
         />
+      </div>
+      <div>
+        {/* To auto load the messages */}
+        <div
+          className="h-1"
+          ref={(el) => {
+            if (el) {
+              const observer = new IntersectionObserver(
+                ([entry]) => {
+                  if (entry.isIntersecting && canLoadMore) {
+                    loadMore();
+                  }
+                },
+                { threshold: 1.0 }
+              );
+              observer.observe(el);
+              return () => observer.disconnect();
+            }
+          }}
+        />
+        {isLoadingMore && (
+          <div className="text-center mr-2 relative">
+            <hr className="absolute top-1/2 left-0 right-0 border-t border-gray-300" />
+            <span className="relative inline-block bg-white text-xs px-4 py-1 rounded-full border border-gray-300 shadow-sm font-semibold">
+              <Loader className="size-5 animate-spin text-muted-foreground" />
+            </span>
+          </div>
+        )}
+      </div>
       <div className="px-2 pb-1">
         <Editor
           key={editorKey}
           onSubmit={handleSubmit}
           placeholder="Reply...."
-          disabled={messagePending || imageLoading }
+          disabled={messagePending || imageLoading}
           innerRef={editorRef}
         />
       </div>

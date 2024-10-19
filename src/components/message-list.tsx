@@ -64,7 +64,6 @@ export const MessageList = ({
     <div
       className={cn(
         "flex flex-col-reverse flex-1 pb-4 overflow-y-auto messages-scrollbar",
-        variant === "thread" && "flex-col"
       )}
     >
       {Object.entries(groupMessages || {}).map(([dateKey, messages]) => (
@@ -98,6 +97,7 @@ export const MessageList = ({
                 // reactions={message.reactions}
                 createdAt={message._creationTime}
                 updatedAt={message.updatedAt}
+                threadName={message.threadName}
                 threadCount={message.threadCount}
                 threadImage={message.threadImage}
                 threadTimeStamp={message.threadStamp}
