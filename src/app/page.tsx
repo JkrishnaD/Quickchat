@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import { UserButton } from "@/features/auth/components/user-button";
 import { useCreateWorkspaceModal } from "@/features/workspace/store/use-create-workspace";
 import { useGetWorkspaces } from "@/features/workspace/api/use-get-workspaces";
